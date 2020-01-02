@@ -1,4 +1,5 @@
-import React from "react";
+import React from 'react'
+import personService from '../services/persons'
 
 const PersonForm = ({
   persons,
@@ -6,26 +7,54 @@ const PersonForm = ({
   newName,
   setNewName,
   newNumber,
-  setNewNumber
+  setNewNumber,
 }) => {
   const handleSubmit = event => {
-    event.preventDefault();
-    const person = { name: newName, number: newNumber };
-    const ExistSameName = obj => obj.name === person.name;
-    if (persons.some(ExistSameName) === true) {
-      alert(`${newName} is alreadey added to phonebook`);
-    } else {
-      setPersons(persons.concat(person));
+    event.preventDefault()
+
+    const person = { name: newName, number: newNumber }
+
+    const ExistSameData = obj =>
+      obj.name === person.name && obj.number === person.number
+
+    const ExistSameName = obj =>
+      obj.name === person.name && obj.number !== person.number
+
+    if (persons.some(ExistSameData) === true) {
+      alert(`${newName} is alreadey added to phonebook`)
     }
-    setNewName("");
-    setNewNumber("");
-  };
+
+    const copy = persons.find(ExistSameName)
+    if (copy !== undefined) {
+      if (
+        window.confirm(
+          `${newName} is already added to phonebook, replace the old number with a new one?`
+        )
+      ) {
+        personService.update(copy.id, person).then(returnedPerson => {
+          setPersons(
+            persons.map(person =>
+              person.id !== copy.id ? person : returnedPerson
+            )
+          )
+        })
+      }
+    } else {
+      personService
+        .create(person)
+        .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+    }
+    setNewName('')
+    setNewNumber('')
+  }
+
   const handleNameChange = event => {
-    setNewName(event.target.value);
-  };
+    setNewName(event.target.value)
+  }
+
   const handleNumberChange = event => {
-    setNewNumber(event.target.value);
-  };
+    setNewNumber(event.target.value)
+  }
 
   return (
     <form onSubmit={handleSubmit}>
@@ -39,7 +68,7 @@ const PersonForm = ({
         <button type="submit">add</button>
       </div>
     </form>
-  );
-};
+  )
+}
 
-export default PersonForm;
+export default PersonForm

@@ -1,20 +1,18 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
-import Filter from "./components/Filter";
-import PersonForm from "./components/PersonForm";
-import Persons from "./components/Persons";
+import React, { useState, useEffect } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
+import personService from './services/persons'
 
 const App = () => {
-  const [persons, setPersons] = useState([]);
-  const [searchName, setSearchName] = useState("");
-  const [newName, setNewName] = useState("");
-  const [newNumber, setNewNumber] = useState("");
+  const [persons, setPersons] = useState([])
+  const [searchName, setSearchName] = useState('')
+  const [newName, setNewName] = useState('')
+  const [newNumber, setNewNumber] = useState('')
 
   useEffect(() => {
-    axios.get("http://localhost:3001/persons/").then(res => {
-      setPersons(res.data);
-    });
-  }, []);
+    personService.getAll().then(initialPersons => setPersons(initialPersons))
+  }, [])
 
   return (
     <div>
@@ -39,10 +37,9 @@ const App = () => {
         persons={persons}
         setPersons={setPersons}
         searchName={searchName}
-        setSearchName={setSearchName}
       />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App
