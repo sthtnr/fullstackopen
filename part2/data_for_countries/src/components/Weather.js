@@ -8,7 +8,7 @@ const Weather = ({ capitalName }) => {
   useEffect(() => {
     axios
       .get(
-        `http://api.weatherstack.com/current\?access_key\=${API_KEY}\&query\=${capitalName}`
+        `http://api.weatherstack.com/current?access_key=${API_KEY}&query=${capitalName}`
       )
       .then(res => {
         setWeatherData(res.data.current);
