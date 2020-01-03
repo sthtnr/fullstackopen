@@ -8,10 +8,10 @@ const PersonForm = ({
   setNewName,
   newNumber,
   setNewNumber,
+  DisplayMessage,
 }) => {
   const handleSubmit = event => {
     event.preventDefault()
-
     const person = { name: newName, number: newNumber }
 
     const ExistSameData = obj =>
@@ -37,12 +37,17 @@ const PersonForm = ({
               person.id !== copy.id ? person : returnedPerson
             )
           )
+          DisplayMessage(
+            false,
+            `Successfully Number changed about ${person.name}`
+          )
         })
       }
     } else {
-      personService
-        .create(person)
-        .then(returnedPerson => setPersons(persons.concat(returnedPerson)))
+      personService.create(person).then(returnedPerson => {
+        setPersons(persons.concat(returnedPerson))
+        DisplayMessage(false, `Successfully Added ${newName}`)
+      })
     }
     setNewName('')
     setNewNumber('')
