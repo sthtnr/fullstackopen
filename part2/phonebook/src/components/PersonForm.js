@@ -20,11 +20,8 @@ const PersonForm = ({
     const ExistSameName = obj =>
       obj.name === person.name && obj.number !== person.number
 
-    if (persons.some(ExistSameData) === true) {
-      alert(`${newName} is alreadey added to phonebook`)
-    }
-
     const copy = persons.find(ExistSameName)
+
     if (copy !== undefined) {
       if (
         window.confirm(
@@ -43,11 +40,16 @@ const PersonForm = ({
           )
         })
       }
+    } else if (persons.some(ExistSameData) === true) {
+      alert(`${newName} is alreadey added to phonebook`)
     } else {
-      personService.create(person).then(returnedPerson => {
-        setPersons(persons.concat(returnedPerson))
-        DisplayMessage(false, `Successfully Added ${newName}`)
-      })
+      personService
+        .create(person)
+        .then(returnedPerson => {
+          setPersons(persons.concat(returnedPerson))
+          DisplayMessage(false, `Successfully Added ${newName}`)
+        })
+        .catch(err => DisplayMessage(true, err.response.data.error))
     }
     setNewName('')
     setNewNumber('')
