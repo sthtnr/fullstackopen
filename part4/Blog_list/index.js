@@ -1,10 +1,10 @@
 const http = require('http')
-require('dotenv').config()
 const express = require('express')
 const app = express()
 const bodyParser = require('body-parser')
 const cors = require('cors')
 const mongoose = require('mongoose')
+const config = require('./utils/config')
 
 const blogSchema = mongoose.Schema({
   title: String,
@@ -15,8 +15,9 @@ const blogSchema = mongoose.Schema({
 
 const Blog = mongoose.model('Blog', blogSchema)
 
-const MONGOURL = process.env.MONGOURL
-mongoose.connect(MONGOURL, { useNewUrlParser: true })
+mongoose.connect(config.MONGOURL, {
+  useNewUrlParser: true,
+})
 
 app.use(cors())
 app.use(bodyParser.json())
@@ -35,7 +36,6 @@ app.post('/api/blogs', (request, response) => {
   })
 })
 
-const PORT = 3003
-app.listen(PORT, () => {
-  console.log(`Server running on port ${PORT}`)
+app.listen(config.PORT, () => {
+  console.log(`Server running on port ${config.PORT}`)
 })
