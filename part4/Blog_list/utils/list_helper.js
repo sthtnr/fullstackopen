@@ -31,4 +31,24 @@ const mostBlogs = blogs => {
   return { author: bbb[0][0], blogs: bbb[0][1] }
 }
 
-module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs }
+const mostLikes = blogs => {
+  // 適当な変数名が思いつかなかったのでとりあえず以下のようにしておきます🙀
+  const aaa = Object.entries(_.invertBy(blogs, 'author'))
+
+  const likeCounter = listOfIndex => {
+    let sumOfLikes = 0
+    listOfIndex.forEach(i => {
+      sumOfLikes += blogs[Number(i)].likes
+    })
+    return sumOfLikes
+  }
+  const bbb = _.orderBy(
+    aaa.map(([k, v]) => [k, likeCounter(v)]),
+    ([k, v]) => v,
+    'desc'
+  )
+
+  return { author: bbb[0][0], likes: bbb[0][1] }
+}
+
+module.exports = { dummy, totalLikes, favoriteBlog, mostBlogs, mostLikes }
