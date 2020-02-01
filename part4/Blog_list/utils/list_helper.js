@@ -1,3 +1,5 @@
+const _ = require('lodash')
+
 const dummy = blogs => {
   return 1
 }
@@ -11,10 +13,8 @@ const totalLikes = blogs => {
 }
 
 const favoriteBlog = blogs => {
-  const BlogsSortedBySumOfLikes = blogs.sort((a, b) =>
-    a.likes > b.likes ? -1 : 1
-  )
-  const { title, author, likes } = BlogsSortedBySumOfLikes[0]
+  const MostLikedBlog = _.orderBy(blogs, 'likes', 'desc')[0]
+  const { title, author, likes } = MostLikedBlog
   return { title, author, likes }
 }
 
