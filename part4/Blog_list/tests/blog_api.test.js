@@ -68,3 +68,15 @@ test('if likes property is missing, it will default to the value 0', async () =>
 
   expect(response.body.likes).toBe(0)
 })
+
+test('if title and url property is missing, return 400', async () => {
+  const missingTitleAndUrlBlog = {
+    author: 'piyo',
+    likes: 666,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(missingTitleAndUrlBlog)
+    .expect(400)
+})
