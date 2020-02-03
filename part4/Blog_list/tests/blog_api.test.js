@@ -14,6 +14,10 @@ beforeEach(async () => {
   await Promise.all(promiseArray)
 })
 
+afterAll(() => {
+  mongoose.connection.close()
+})
+
 test('blogs are returned as json', async () => {
   await api
     .get('/api/blogs')
@@ -33,6 +37,23 @@ test('blog has unique identifier named id', async () => {
   expect(response.body[0].id).toBeDefined()
 })
 
-afterAll(() => {
-  mongoose.connection.close()
+test('a valid note can be added', async () => {
+  const newBlog = {
+    title: 'hogehoge',
+    author: 'fugafuga',
+    url: 'https://example.com/',
+    likes: 114514,
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
+    .expect('Content-Type', /application\/json/)
+
+  const blogsAtEnd = await helper.blogsInDb()
+  expect(blogsAtEnd.length).toBe(helper.initialBlogs.length + 1)
+
+  const titles = blogsAtEnd.map(n => n.title)
+  expect(titles).toContain('hogehoge')
 })
