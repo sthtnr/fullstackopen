@@ -57,3 +57,14 @@ test('a valid note can be added', async () => {
   const titles = blogsAtEnd.map(n => n.title)
   expect(titles).toContain('hogehoge')
 })
+
+test('if likes property is missing, it will default to the value 0', async () => {
+  const missingLikesBlog = {
+    title: 'hoge',
+    author: 'fuga',
+    url: 'https://example.com/',
+  }
+  const response = await api.post('/api/blogs').send(missingLikesBlog)
+
+  expect(response.body.likes).toBe(0)
+})
