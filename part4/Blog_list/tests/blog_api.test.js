@@ -6,6 +6,8 @@ const api = supertest(app)
 
 const Blog = require('../models/blog')
 
+jest.setTimeout(30000)
+
 beforeEach(async () => {
   await Blog.deleteMany({})
 
@@ -78,5 +80,30 @@ test('if title and url property is missing, return 400', async () => {
   await api
     .post('/api/blogs')
     .send(missingTitleAndUrlBlog)
+    .expect(400)
+})
+
+test('invalid user are not created, if so return 400', async () => {
+  const missingUsernameUser = { name: 'bbb', password: 'ccc' }
+  const missingPasswordUser = { username: 'aaa', name: 'bbb' }
+  const invalidPasswordLengthUser = {
+    username: 'aaa',
+    name: 'bbb',
+    password: 'c',
+  }
+
+  await api
+    .post('/api/blogs')
+    .send(missingUsernameUser)
+    .expect(400)
+
+  await api
+    .post('/api/blogs')
+    .send(missingPasswordUser)
+    .expect(400)
+
+  await api
+    .post('/api/blogs')
+    .send(invalidPasswordLengthUser)
     .expect(400)
 })
