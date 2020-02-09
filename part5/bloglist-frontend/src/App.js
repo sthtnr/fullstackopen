@@ -3,7 +3,27 @@ import Blog from './components/Blog'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
-const BlogCreate = ({ title, author, url, setTitle, setAuthor, setUrl }) => {
+const Notification = ({ message }) => {
+  const notificationStyle = {
+    color: 'gold',
+    fontStyle: 'bold',
+    fontSize: 30,
+  }
+  if (message === null) {
+    return null
+  }
+  return <div style={notificationStyle}>{message}</div>
+}
+
+const BlogCreate = ({
+  title,
+  author,
+  url,
+  setTitle,
+  setAuthor,
+  setUrl,
+  setMessage,
+}) => {
   const handleCreateNewBlog = event => {
     event.preventDefault()
     blogService.create({
@@ -11,6 +31,10 @@ const BlogCreate = ({ title, author, url, setTitle, setAuthor, setUrl }) => {
       author,
       url,
     })
+    setMessage(`a new blog ${title} by ${author} added✨`)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
     setTitle('')
     setAuthor('')
     setUrl('')
@@ -52,13 +76,14 @@ const BlogCreate = ({ title, author, url, setTitle, setAuthor, setUrl }) => {
 }
 
 const App = () => {
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [newTitle, setNewTitle] = useState('')
   const [newAuthor, setNewAuthor] = useState('')
   const [newUrl, setNewUrl] = useState('')
-  const [user, setUser] = useState(null)
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
+  const [message, setMessage] = useState(null)
 
   useEffect(() => {
     blogService.getAll().then(initialBlogs => {
@@ -83,14 +108,25 @@ const App = () => {
 
       window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user))
       setUser(user)
+      setMessage(`${user.name} successfuly logged in✨`)
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
       setUsername('')
       setPassword('')
     } catch (error) {
-      console.log(error)
+      setMessage('wrong username or password😭')
+      setTimeout(() => {
+        setMessage(null)
+      }, 5000)
     }
   }
   const handleLogout = event => {
     setUser(null)
+    setMessage(`${user.name} successfuly logged out✨`)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
     window.localStorage.clear()
     blogService.setToken(null)
   }
@@ -99,6 +135,7 @@ const App = () => {
     return (
       <div>
         <h2>Log in to application</h2>
+        <Notification message={message} />
         <form onSubmit={handleLogin}>
           <div>
             username
@@ -127,6 +164,7 @@ const App = () => {
   return (
     <div>
       <h2>blogs</h2>
+      <Notification message={message} />
       <div>
         <p>
           {user.name} logged in
@@ -141,6 +179,7 @@ const App = () => {
           setTitle={setNewTitle}
           setAuthor={setNewAuthor}
           setUrl={setNewUrl}
+          setMessage={setMessage}
         />
         {blogs.map(blog => (
           <Blog key={blog.id} blog={blog} />
