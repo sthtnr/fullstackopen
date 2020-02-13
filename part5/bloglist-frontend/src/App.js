@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import Blog from './components/Blog'
+import CreateBlogForm from './components/CreateBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
 
@@ -15,75 +16,16 @@ const Notification = ({ message }) => {
   return <div style={notificationStyle}>{message}</div>
 }
 
-const BlogCreate = ({
-  title,
-  author,
-  url,
-  setTitle,
-  setAuthor,
-  setUrl,
-  setMessage,
-}) => {
-  const handleCreateNewBlog = event => {
-    event.preventDefault()
-    blogService.create({
-      title,
-      author,
-      url,
-    })
-    setMessage(`a new blog ${title} by ${author} added✨`)
-    setTimeout(() => {
-      setMessage(null)
-    }, 5000)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
-  }
-  return (
-    <div>
-      <h2>create new</h2>
-      <div>
-        <form onSubmit={handleCreateNewBlog}>
-          <p>
-            title:
-            <input
-              type="text"
-              value={title}
-              onChange={({ target }) => setTitle(target.value)}
-            />
-          </p>
-          <p>
-            author:
-            <input
-              type="text"
-              value={author}
-              onChange={({ target }) => setAuthor(target.value)}
-            />
-          </p>
-          <p>
-            url:
-            <input
-              type="text"
-              value={url}
-              onChange={({ target }) => setUrl(target.value)}
-            />
-          </p>
-          <button type="submit">create</button>
-        </form>
-      </div>
-    </div>
-  )
-}
-
 const App = () => {
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [newTitle, setNewTitle] = useState('')
-  const [newAuthor, setNewAuthor] = useState('')
-  const [newUrl, setNewUrl] = useState('')
+  const [title, setTitle] = useState('')
+  const [author, setAuthor] = useState('')
+  const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
+  const [formVisible, setFormVisible] = useState(false)
 
   useEffect(() => {
     blogService.getAll().then(initialBlogs => {
@@ -121,6 +63,7 @@ const App = () => {
       }, 5000)
     }
   }
+
   const handleLogout = event => {
     setUser(null)
     setMessage(`${user.name} successfuly logged out✨`)
@@ -129,6 +72,47 @@ const App = () => {
     }, 5000)
     window.localStorage.clear()
     blogService.setToken(null)
+  }
+
+  const createBlogForm = () => {
+    const hideWhenVisible = { display: formVisible ? 'none' : '' }
+    const showWhenVisible = { display: formVisible ? '' : 'none' }
+
+    return (
+      <div>
+        <div style={hideWhenVisible}>
+          <button onClick={() => setFormVisible(true)}>new blog</button>
+        </div>
+        <div style={showWhenVisible}>
+          <CreateBlogForm
+            title={title}
+            author={author}
+            url={url}
+            setTitle={setTitle}
+            setAuthor={setAuthor}
+            setUrl={setUrl}
+            handleSubmit={handleCreateNewBlog}
+          />
+          <button onClick={() => setFormVisible(false)}>cancel</button>
+        </div>
+      </div>
+    )
+  }
+
+  const handleCreateNewBlog = event => {
+    event.preventDefault()
+    blogService.create({
+      title,
+      author,
+      url,
+    })
+    setMessage(`a new blog ${title} by ${author} added✨`)
+    setTimeout(() => {
+      setMessage(null)
+    }, 5000)
+    setTitle('')
+    setAuthor('')
+    setUrl('')
   }
 
   if (user === null) {
@@ -172,15 +156,7 @@ const App = () => {
             logout
           </button>
         </p>
-        <BlogCreate
-          title={newTitle}
-          author={newAuthor}
-          url={newUrl}
-          setTitle={setNewTitle}
-          setAuthor={setNewAuthor}
-          setUrl={setNewUrl}
-          setMessage={setMessage}
-        />
+        {createBlogForm()}
         {blogs.map(blog => (
           <Blog key={blog.id} blog={blog} />
         ))}
