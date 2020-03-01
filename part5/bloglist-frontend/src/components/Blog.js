@@ -1,6 +1,19 @@
 import React, { useState } from 'react'
-const Blog = ({ blog }) => {
+import blogService from '../services/blogs'
+
+const Blog = ({ blog, blogs, setBlogs }) => {
   const [viewDetail, setViewDetail] = useState(false)
+
+  const handleClick = () => {
+    const updatedBlog = { ...blog, likes: blog.likes + 1 }
+    blogService.update(updatedBlog).then(returnedUpdatedBlog => {
+      setBlogs(
+        blogs.map(b =>
+          b.id !== returnedUpdatedBlog.id ? b : returnedUpdatedBlog
+        )
+      )
+    })
+  }
 
   const blogStyle = {
     paddingTop: 10,
@@ -10,26 +23,21 @@ const Blog = ({ blog }) => {
     marginBottom: 5,
   }
 
-  if (viewDetail) {
-    return (
-      <div style={blogStyle}>
-        <div onClick={() => setViewDetail(!viewDetail)}>
-          <div>
-            {blog.title} {blog.author}
-          </div>
-          <div>{blog.url}</div>
-          <div>
-            {blog.likes} likes
-            <button>like</button>
-          </div>
-        </div>
-      </div>
-    )
+  const visibleWhenClicked = {
+    display: viewDetail ? '' : 'none',
   }
+
   return (
     <div style={blogStyle}>
       <div onClick={() => setViewDetail(!viewDetail)}>
         {blog.title} {blog.author}
+      </div>
+      <div style={visibleWhenClicked}>
+        <div>{blog.url}</div>
+        <div>
+          {blog.likes} likes
+          <button onClick={handleClick}>like</button>
+        </div>
       </div>
     </div>
   )
