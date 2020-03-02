@@ -4,7 +4,7 @@ import blogService from '../services/blogs'
 const Blog = ({ blog, blogs, setBlogs }) => {
   const [viewDetail, setViewDetail] = useState(false)
 
-  const handleClick = () => {
+  const handleLikeClick = () => {
     const updatedBlog = { ...blog, likes: blog.likes + 1 }
     blogService.update(updatedBlog).then(returnedUpdatedBlog => {
       setBlogs(
@@ -13,6 +13,14 @@ const Blog = ({ blog, blogs, setBlogs }) => {
         )
       )
     })
+  }
+
+  const handleRemoveClick = () => {
+    if (window.confirm(`remove blog ${blog.title} by ${blog.author}`)) {
+      blogService.deletes(blog.id).then(() => {
+        setBlogs(blogs.filter(b => b.id !== blog.id))
+      })
+    }
   }
 
   const blogStyle = {
@@ -36,7 +44,10 @@ const Blog = ({ blog, blogs, setBlogs }) => {
         <div>{blog.url}</div>
         <div>
           {blog.likes} likes
-          <button onClick={handleClick}>like</button>
+          <button onClick={handleLikeClick}>like</button>
+        </div>
+        <div>
+          <button onClick={handleRemoveClick}>remove</button>
         </div>
       </div>
     </div>
