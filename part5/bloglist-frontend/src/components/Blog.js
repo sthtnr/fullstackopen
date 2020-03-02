@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import blogService from '../services/blogs'
 
-const Blog = ({ blog, blogs, setBlogs }) => {
+const Blog = ({ user, blog, blogs, setBlogs }) => {
   const [viewDetail, setViewDetail] = useState(false)
 
   const handleLikeClick = () => {
@@ -34,6 +34,9 @@ const Blog = ({ blog, blogs, setBlogs }) => {
   const visibleWhenClicked = {
     display: viewDetail ? '' : 'none',
   }
+  const visibleWhenPostedByLogedInUser = {
+    display: user.username === blog.user.username ? '' : 'none',
+  }
 
   return (
     <div style={blogStyle}>
@@ -46,7 +49,8 @@ const Blog = ({ blog, blogs, setBlogs }) => {
           {blog.likes} likes
           <button onClick={handleLikeClick}>like</button>
         </div>
-        <div>
+        <div>added by {blog.user.username}</div>
+        <div style={visibleWhenPostedByLogedInUser}>
           <button onClick={handleRemoveClick}>remove</button>
         </div>
       </div>
