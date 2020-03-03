@@ -1,4 +1,5 @@
 import React, { useState } from 'react'
+import PropTypes from 'prop-types'
 import blogService from '../services/blogs'
 
 const Blog = ({ user, blog, blogs, setBlogs }) => {
@@ -56,6 +57,13 @@ const Blog = ({ user, blog, blogs, setBlogs }) => {
       </div>
     </div>
   )
+}
+
+Blog.propTypes = {
+  user: PropTypes.object.isRequired,
+  blog: PropTypes.object.isRequired,
+  blogs: PropTypes.array.isRequired,
+  setBlogs: PropTypes.func.isRequired,
 }
 
 export default Blog
