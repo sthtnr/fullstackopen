@@ -65,7 +65,7 @@ const App = () => {
     }
   }
 
-  const handleLogout = event => {
+  const handleLogout = () => {
     setUser(null)
     setMessage(`${user.name} successfuly logged out✨`)
     setTimeout(() => {
