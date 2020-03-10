@@ -3,6 +3,7 @@ import Blog from './components/Blog'
 import CreateBlogForm from './components/CreateBlogForm'
 import blogService from './services/blogs'
 import loginService from './services/login'
+import { useField } from './hooks'
 
 const Notification = ({ message }) => {
   const notificationStyle = {
@@ -17,8 +18,6 @@ const Notification = ({ message }) => {
 }
 
 const App = () => {
-  const [username, setUsername] = useState('')
-  const [password, setPassword] = useState('')
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
   const [title, setTitle] = useState('')
@@ -26,6 +25,8 @@ const App = () => {
   const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
   const [formVisible, setFormVisible] = useState(false)
+  const username = useField('text')
+  const password = useField('text')
 
   useEffect(() => {
     blogService.getAll().then(initialBlogs => {
@@ -46,7 +47,10 @@ const App = () => {
   const handleLogin = async event => {
     event.preventDefault()
     try {
-      const user = await loginService.login({ username, password })
+      const user = await loginService.login({
+        username: username.value,
+        password: password.value,
+      })
       blogService.setToken(user.token)
 
       window.localStorage.setItem('loggedBloglistUser', JSON.stringify(user))
@@ -55,8 +59,8 @@ const App = () => {
       setTimeout(() => {
         setMessage(null)
       }, 5000)
-      setUsername('')
-      setPassword('')
+      username.setValue('')
+      password.setValue('')
     } catch (error) {
       setMessage('wrong username or password😭')
       setTimeout(() => {
@@ -125,19 +129,17 @@ const App = () => {
           <div>
             username
             <input
-              type="text"
-              name="Username"
-              autoComplete="username"
-              onChange={({ target }) => setUsername(target.value)}
+              type={username.type}
+              value={username.value}
+              onChange={username.onChange}
             />
           </div>
           <div>
             password
             <input
-              type="password"
-              name="Password"
-              autoComplete="current-password"
-              onChange={({ target }) => setPassword(target.value)}
+              type={password.type}
+              value={password.value}
+              onChange={password.onChange}
             />
           </div>
           <button type="submit">login</button>
