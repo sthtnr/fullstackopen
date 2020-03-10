@@ -20,13 +20,13 @@ const Notification = ({ message }) => {
 const App = () => {
   const [user, setUser] = useState(null)
   const [blogs, setBlogs] = useState([])
-  const [title, setTitle] = useState('')
-  const [author, setAuthor] = useState('')
-  const [url, setUrl] = useState('')
   const [message, setMessage] = useState(null)
   const [formVisible, setFormVisible] = useState(false)
   const username = useField('text')
   const password = useField('text')
+  const title = useField('text')
+  const author = useField('text')
+  const url = useField('text')
 
   useEffect(() => {
     blogService.getAll().then(initialBlogs => {
@@ -93,9 +93,6 @@ const App = () => {
             title={title}
             author={author}
             url={url}
-            setTitle={setTitle}
-            setAuthor={setAuthor}
-            setUrl={setUrl}
             handleSubmit={handleCreateNewBlog}
           />
           <button onClick={() => setFormVisible(false)}>cancel</button>
@@ -107,17 +104,17 @@ const App = () => {
   const handleCreateNewBlog = event => {
     event.preventDefault()
     blogService.create({
-      title,
-      author,
-      url,
+      title: title.value,
+      author: author.value,
+      url: url.value,
     })
-    setMessage(`a new blog ${title} by ${author} added✨`)
+    setMessage(`a new blog ${title.value} by ${author.value} added✨`)
     setTimeout(() => {
       setMessage(null)
     }, 5000)
-    setTitle('')
-    setAuthor('')
-    setUrl('')
+    title.setValue('')
+    author.setValue('')
+    url.setValue('')
   }
 
   if (user === null) {
