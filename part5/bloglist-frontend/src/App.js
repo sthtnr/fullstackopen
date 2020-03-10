@@ -44,6 +44,11 @@ const App = () => {
     }
   }, [])
 
+  const removeSetValue = val => {
+    const { setValue, ...valWithoutSetValue } = val
+    return valWithoutSetValue
+  }
+
   const handleLogin = async event => {
     event.preventDefault()
     try {
@@ -94,6 +99,7 @@ const App = () => {
             author={author}
             url={url}
             handleSubmit={handleCreateNewBlog}
+            removeSetValue={removeSetValue}
           />
           <button onClick={() => setFormVisible(false)}>cancel</button>
         </div>
@@ -125,19 +131,11 @@ const App = () => {
         <form onSubmit={handleLogin}>
           <div>
             username
-            <input
-              type={username.type}
-              value={username.value}
-              onChange={username.onChange}
-            />
+            <input {...removeSetValue(username)} />
           </div>
           <div>
             password
-            <input
-              type={password.type}
-              value={password.value}
-              onChange={password.onChange}
-            />
+            <input {...removeSetValue(password)} />
           </div>
           <button type="submit">login</button>
         </form>
