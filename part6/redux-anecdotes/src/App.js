@@ -1,4 +1,5 @@
 import React from 'react'
+import _ from 'lodash'
 import { upVote, createAnec } from './reducers/anecdoteReducer'
 
 const App = props => {
@@ -18,7 +19,7 @@ const App = props => {
   return (
     <div>
       <h2>Anecdotes</h2>
-      {anecdotes.map(anecdote => (
+      {_.orderBy(anecdotes, 'votes', 'desc').map(anecdote => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
           <div>
