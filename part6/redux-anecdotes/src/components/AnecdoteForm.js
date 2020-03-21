@@ -1,7 +1,7 @@
 import React from 'react'
 import { createAnec } from '../reducers/anecdoteReducer'
 
-const NewAnec = ({ store }) => {
+const AnecdoteForm = ({ store }) => {
   const addAnec = event => {
     event.preventDefault()
     store.dispatch(createAnec(event.target.anec.value))
@@ -21,4 +21,4 @@ const NewAnec = ({ store }) => {
   )
 }
 
-export default NewAnec
+export default AnecdoteForm

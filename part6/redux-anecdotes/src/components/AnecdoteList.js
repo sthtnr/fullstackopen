@@ -11,7 +11,6 @@ const AnecdoteList = ({ store }) => {
 
   return (
     <div>
-      <h2>Anecdotes</h2>
       {_.orderBy(anecdotes, 'votes', 'desc').map(anecdote => (
         <div key={anecdote.id}>
           <div>{anecdote.content}</div>
