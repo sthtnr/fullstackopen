@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { createAnec } from '../actions/anecAction'
+import { createAnec } from '../actions/anecdoteAction'
 
 const AnecdoteForm = () => {
   const dispatch = useDispatch()

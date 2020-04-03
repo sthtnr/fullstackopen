@@ -1,9 +1,9 @@
 const getId = () => (100000 * Math.random()).toFixed(0)
 
-const upVote = id => {
+const upVote = anec => {
   return {
     type: 'UP_VOTE',
-    data: { id },
+    data: { ...anec },
   }
 }
 
