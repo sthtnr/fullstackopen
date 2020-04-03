@@ -1,7 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import _ from 'lodash'
-import { upVote } from '../reducers/anecdoteReducer'
+import { upVote } from '../actions/anecAction'
 
 const AnecdoteList = () => {
   const anecdotes = useSelector(state => state.anec)
