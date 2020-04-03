@@ -1,12 +1,14 @@
 import React from 'react'
+import { useDispatch, useSelector } from 'react-redux'
 import _ from 'lodash'
 import { upVote } from '../reducers/anecdoteReducer'
 
-const AnecdoteList = ({ store }) => {
-  const anecdotes = store.getState()
+const AnecdoteList = () => {
+  const anecdotes = useSelector(state => state)
+  const dispatch = useDispatch()
 
   const vote = id => {
-    store.dispatch(upVote(id))
+    dispatch(upVote(id))
   }
 
   return (
