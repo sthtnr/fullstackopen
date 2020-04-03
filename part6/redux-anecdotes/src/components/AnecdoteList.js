@@ -4,7 +4,7 @@ import _ from 'lodash'
 import { upVote } from '../reducers/anecdoteReducer'
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(state => state)
+  const anecdotes = useSelector(state => state.anec)
   const dispatch = useDispatch()
 
   const vote = id => {
