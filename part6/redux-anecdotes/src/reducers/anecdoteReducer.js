@@ -28,6 +28,9 @@ const anecReducer = (state = initialState, action) => {
       )
     case 'NEW_ANEC':
       return [...state, action.data]
+    case 'FILTER':
+      const inputValue = action.data.inputValue
+      return initialState.filter(anec => anec.content.includes(inputValue))
     default:
       return state
   }
