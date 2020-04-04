@@ -1,5 +1,3 @@
-const getId = () => (100000 * Math.random()).toFixed(0)
-
 const upVote = anec => {
   return {
     type: 'UP_VOTE',
@@ -7,14 +5,10 @@ const upVote = anec => {
   }
 }
 
-const createAnec = content => {
+const createAnec = data => {
   return {
     type: 'NEW_ANEC',
-    data: {
-      content,
-      id: getId(),
-      votes: 0,
-    },
+    data,
   }
 }
 
