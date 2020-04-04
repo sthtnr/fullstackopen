@@ -1,6 +1,4 @@
-const initialState = ''
-
-const notifReducer = (state = initialState, action) => {
+const notifReducer = (state = '', action) => {
   switch (action.type) {
     case 'UP_VOTE':
       const votedContent = action.data.content

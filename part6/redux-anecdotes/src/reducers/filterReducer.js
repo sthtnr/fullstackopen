@@ -1,6 +1,4 @@
-const initialState = ''
-
-const filterReducer = (state = initialState, action) => {
+const filterReducer = (state = '', action) => {
   switch (action.type) {
     case 'FILTER':
       return action.data.inputValue

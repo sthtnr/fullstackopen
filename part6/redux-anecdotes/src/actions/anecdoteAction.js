@@ -18,4 +18,11 @@ const createAnec = content => {
   }
 }
 
-export { upVote, createAnec }
+const initializeAnec = anecs => {
+  return {
+    type: 'INIT_ANEC',
+    data: anecs,
+  }
+}
+
+export { upVote, createAnec, initializeAnec }
