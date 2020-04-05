@@ -6,6 +6,8 @@ const notifReducer = (state = '', action) => {
     case 'NEW_ANEC':
       const createdContent = action.data.content
       return `you created '${createdContent}'`
+    case 'CLEAR_NOTIF':
+      return ''
     default:
       return state
   }
