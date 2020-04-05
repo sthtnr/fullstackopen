@@ -11,8 +11,6 @@ const AnecdoteList = () => {
     dispatch(initializeAnec())
   }, [dispatch])
 
-  const vote = anec => dispatch(upVote(anec))
-
   return (
     <div>
       {_.orderBy(anecdotes, 'votes', 'desc').map(anecdote => (
@@ -20,7 +18,7 @@ const AnecdoteList = () => {
           <div>{anecdote.content}</div>
           <div>
             has {anecdote.votes}
-            <button onClick={() => vote(anecdote)}>vote</button>
+            <button onClick={() => dispatch(upVote(anecdote))}>vote</button>
           </div>
         </div>
       ))}

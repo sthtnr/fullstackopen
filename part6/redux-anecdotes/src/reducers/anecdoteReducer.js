@@ -2,9 +2,8 @@ const anecReducer = (state = [], action) => {
   switch (action.type) {
     case 'UP_VOTE':
       const id = action.data.id
-      return state.map(anec =>
-        anec.id !== id ? anec : { ...anec, votes: ++anec.votes }
-      )
+      const votes = action.data.votes
+      return state.map(anec => (anec.id !== id ? anec : { ...anec, votes }))
     case 'NEW_ANEC':
       return [...state, action.data]
     case 'FILTER':

@@ -1,9 +1,12 @@
 import anecService from '../services/anecdotes'
 
 const upVote = anec => {
-  return {
-    type: 'UP_VOTE',
-    data: { ...anec },
+  return async dispatch => {
+    const upVotedAnec = await anecService.updateVote(anec)
+    dispatch({
+      type: 'UP_VOTE',
+      data: { ...upVotedAnec },
+    })
   }
 }
 
