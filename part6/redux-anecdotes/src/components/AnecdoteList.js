@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import _ from 'lodash'
-import anecService from '../services/anecdotes'
 import { upVote, initializeAnec } from '../actions/anecdoteAction'
 
 const AnecdoteList = () => {
@@ -9,7 +8,7 @@ const AnecdoteList = () => {
   const dispatch = useDispatch()
 
   useEffect(() => {
-    anecService.getAll().then(anecs => dispatch(initializeAnec(anecs)))
+    dispatch(initializeAnec())
   }, [dispatch])
 
   const vote = anec => dispatch(upVote(anec))

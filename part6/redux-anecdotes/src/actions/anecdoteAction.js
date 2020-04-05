@@ -1,3 +1,5 @@
+import anecService from '../services/anecdotes'
+
 const upVote = anec => {
   return {
     type: 'UP_VOTE',
@@ -12,10 +14,10 @@ const createAnec = data => {
   }
 }
 
-const initializeAnec = anecs => {
-  return {
-    type: 'INIT_ANEC',
-    data: anecs,
+const initializeAnec = () => {
+  return async dispatch => {
+    const anecs = await anecService.getAll()
+    dispatch({ type: 'INIT_ANEC', data: anecs })
   }
 }
 
