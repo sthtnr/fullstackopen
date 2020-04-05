@@ -8,9 +8,12 @@ const upVote = anec => {
 }
 
 const createAnec = data => {
-  return {
-    type: 'NEW_ANEC',
-    data,
+  return async dispatch => {
+    const newAnec = await anecService.createNew(data)
+    dispatch({
+      type: 'NEW_ANEC',
+      data: newAnec,
+    })
   }
 }
 
