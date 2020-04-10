@@ -6,9 +6,6 @@ const anecReducer = (state = [], action) => {
       return state.map(anec => (anec.id !== id ? anec : { ...anec, votes }))
     case 'NEW_ANEC':
       return [...state, action.data]
-    case 'FILTER':
-      const inputValue = action.data.inputValue
-      return state.filter(anec => anec.content.includes(inputValue))
     case 'INIT_ANEC':
       return action.data
     default:

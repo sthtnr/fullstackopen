@@ -4,7 +4,10 @@ import _ from 'lodash'
 import { upVote, initializeAnec } from '../actions/anecdoteAction'
 
 const AnecdoteList = () => {
-  const anecdotes = useSelector(state => state.anec)
+  const anecdotes = useSelector(state => {
+    const filter = state.filter
+    return state.anec.filter(a => a.content.includes(filter))
+  })
   const dispatch = useDispatch()
 
   useEffect(() => {
