@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom'
+import { Link, Route, Switch, useRouteMatch } from 'react-router-dom'
 
 const Menu = () => {
   const padding = {
@@ -25,7 +25,9 @@ const AnecdoteList = ({ anecdotes }) => (
     <h2>Anecdotes</h2>
     <ul>
       {anecdotes.map((anecdote) => (
-        <li key={anecdote.id}>{anecdote.content}</li>
+        <li key={anecdote.id}>
+          <Link to={`/anecdotes/${anecdote.id}`}>{anecdote.content}</Link>
+        </li>
       ))}
     </ul>
   </div>
@@ -53,19 +55,24 @@ const About = () => (
   </div>
 )
 
-const Footer = () => (
-  <div>
-    Anecdote app for{' '}
-    <a href="https://courses.helsinki.fi/fi/tkt21009">
-      Full Stack -websovelluskehitys
-    </a>
-    . See{' '}
-    <a href="https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js">
-      https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js
-    </a>{' '}
-    for the source code.
-  </div>
-)
+const Footer = () => {
+  const padding = {
+    padding: 100,
+  }
+  return (
+    <div style={padding}>
+      Anecdote app for{' '}
+      <a href="https://courses.helsinki.fi/fi/tkt21009">
+        Full Stack -websovelluskehitys
+      </a>
+      . See{' '}
+      <a href="https://github.com/fullstack-hy2020/routed-anecdotes/blob/master/src/App.js">
+        https://github.com/fullstack-hy2019/routed-anecdotes/blob/master/src/App.js
+      </a>{' '}
+      for the source code.
+    </div>
+  )
+}
 
 const CreateNew = (props) => {
   const [content, setContent] = useState('')
@@ -116,6 +123,13 @@ const CreateNew = (props) => {
   )
 }
 
+const Anec = ({ anec }) => (
+  <div>
+    <h2>{anec.content}</h2>
+    <div>has {anec.votes} votes</div>
+  </div>
+)
+
 const App = () => {
   const [anecdotes, setAnecdotes] = useState([
     {
@@ -123,18 +137,23 @@ const App = () => {
       author: 'Jez Humble',
       info: 'https://martinfowler.com/bliki/FrequencyReducesDifficulty.html',
       votes: 0,
-      id: '1',
+      id: 1,
     },
     {
       content: 'Premature optimization is the root of all evil',
       author: 'Donald Knuth',
       info: 'http://wiki.c2.com/?PrematureOptimization',
       votes: 0,
-      id: '2',
+      id: 2,
     },
   ])
 
   const [notification, setNotification] = useState('')
+
+  const match = useRouteMatch('/anecdotes/:id')
+  const anec = match
+    ? anecdotes.find((a) => a.id === Number(match.params.id))
+    : null
 
   const addNew = (anecdote) => {
     anecdote.id = (Math.random() * 10000).toFixed(0)
@@ -155,12 +174,14 @@ const App = () => {
   }
 
   return (
-    <Router>
+    <div>
       <h1>Software anecdotes</h1>
-
       <Menu />
 
       <Switch>
+        <Route path="/anecdotes/:id">
+          <Anec anec={anec} />
+        </Route>
         <Route path="/about">
           <About />
         </Route>
@@ -173,7 +194,7 @@ const App = () => {
       </Switch>
 
       <Footer />
-    </Router>
+    </div>
   )
 }
 
