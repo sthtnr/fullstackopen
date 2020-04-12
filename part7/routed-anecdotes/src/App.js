@@ -96,17 +96,24 @@ const CreateNew = ({ addNew, setNotification }) => {
       info: info.value,
       votes: 0,
     })
-    setNotification(content)
+    setNotification(content.value)
     setTimeout(() => {
       setNotification('')
     }, 10000)
     history.push('/')
   }
 
+  const handleReset = (e) => {
+    e.preventDefault()
+    content.onReset()
+    author.onReset()
+    info.onReset()
+  }
+
   return (
     <div>
       <h2>create a new anecdote</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
           <input {...content} />
@@ -119,7 +126,8 @@ const CreateNew = ({ addNew, setNotification }) => {
           url for more info
           <input {...info} />
         </div>
-        <button>create</button>
+        <button type="submit">create</button>
+        <button type="reset">reset</button>
       </form>
     </div>
   )
