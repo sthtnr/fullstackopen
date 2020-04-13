@@ -105,9 +105,9 @@ const CreateNew = ({ addNew, setNotification }) => {
 
   const handleReset = (e) => {
     e.preventDefault()
-    content.onReset()
-    author.onReset()
-    info.onReset()
+    content.reset()
+    author.reset()
+    info.reset()
   }
 
   return (
@@ -116,15 +116,15 @@ const CreateNew = ({ addNew, setNotification }) => {
       <form onSubmit={handleSubmit} onReset={handleReset}>
         <div>
           content
-          <input {...content} />
+          <input {...content.form} />
         </div>
         <div>
           author
-          <input {...author} />
+          <input {...author.form} />
         </div>
         <div>
           url for more info
-          <input {...info} />
+          <input {...info.form} />
         </div>
         <button type="submit">create</button>
         <button type="reset">reset</button>
