@@ -1,19 +1,13 @@
 interface parsedObj {
-  a: number
-  b: number
+  height: number
+  weight: number
 }
 
-const parseArguments = (args: Array<string>): parsedObj => {
-  if (args.length < 4) {
-    throw new Error('Not enough arguments')
-  }
-  if (args.length > 4) {
-    throw new Error('Too many arguments')
-  }
-  const a = Number(args[2])
-  const b = Number(args[3])
-  if (!isNaN(a) && !isNaN(b)) {
-    return { a, b }
+const parseQuerys = (args: any): parsedObj => {
+  const height = Number(args.height)
+  const weight = Number(args.weight)
+  if (!isNaN(height) && !isNaN(weight)) {
+    return { height, weight }
   } else {
     throw new Error('Provided values were not numbers')
   }
@@ -32,9 +26,4 @@ const calculateBmi = (height: number, weight: number): string => {
   }
 }
 
-try {
-  const { a, b } = parseArguments(process.argv)
-  console.log(calculateBmi(a, b))
-} catch (error) {
-  console.log(error)
-}
+export { parseQuerys, calculateBmi }
