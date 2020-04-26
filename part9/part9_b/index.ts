@@ -8,7 +8,7 @@ app.get('/hello', (_req, res) => {
 
 app.get('/bmi', async (req, res) => {
   try {
-    const { height, weight } = await parseQuerys(req.query)
+    const { height, weight } = parseQuerys(req.query)
     const bmi = calculateBmi(height, weight)
     res.json({ height, weight, bmi })
   } catch (err) {
