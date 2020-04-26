@@ -9,7 +9,7 @@ const parseArguments4ExCalc = (args: Array<string>): Array<number> => {
   return Args2number;
 };
 
-interface returnObj {
+interface ReturnObj {
   periodLength: number;
   trainingDays: number;
   success: boolean;
@@ -19,7 +19,7 @@ interface returnObj {
   average: number;
 }
 
-const calculateExercise = (args: Array<number>): returnObj => {
+const calculateExercise = (args: Array<number>): ReturnObj => {
   const target = args[0];
   const periodLength = args.length - 1;
   const average =

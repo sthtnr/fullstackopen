@@ -1,9 +1,9 @@
-interface parsedObj {
+interface ParsedObj {
   height: number;
   weight: number;
 }
 
-const parseQuerys = (args: any): parsedObj => {
+const parseQuerys = (args: any): ParsedObj => {
   const height = Number(args.height);
   const weight = Number(args.weight);
   if (!isNaN(height) && !isNaN(weight)) {

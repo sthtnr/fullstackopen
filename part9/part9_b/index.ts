@@ -6,7 +6,7 @@ app.get('/hello', (_req, res) => {
   res.send('hello full stack!');
 });
 
-app.get('/bmi', async (req, res) => {
+app.get('/bmi', (req, res) => {
   try {
     const { height, weight } = parseQuerys(req.query);
     const bmi = calculateBmi(height, weight);
